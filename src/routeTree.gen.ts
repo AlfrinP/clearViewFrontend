@@ -9,16 +9,22 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as DashboardRouteRouteImport } from './routes/dashboard/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SignupIndexRouteImport } from './routes/signup/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
-import { Route as DashboardFactCheckRouteImport } from './routes/dashboard/fact-check'
 import { Route as DashboardUploadDocumentIndexRouteImport } from './routes/dashboard/upload-document/index'
 import { Route as DashboardSettingsIndexRouteImport } from './routes/dashboard/settings/index'
 import { Route as DashboardProfileIndexRouteImport } from './routes/dashboard/profile/index'
 import { Route as DashboardHistoryIndexRouteImport } from './routes/dashboard/history/index'
+import { Route as DashboardFactCheckIndexRouteImport } from './routes/dashboard/fact-check/index'
 
+const DashboardRouteRoute = DashboardRouteRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -35,43 +41,44 @@ const LoginIndexRoute = LoginIndexRouteImport.update({
   getParentRoute: () => rootRouteImport,
 } as any)
 const DashboardIndexRoute = DashboardIndexRouteImport.update({
-  id: '/dashboard/',
-  path: '/dashboard/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DashboardFactCheckRoute = DashboardFactCheckRouteImport.update({
-  id: '/dashboard/fact-check',
-  path: '/dashboard/fact-check',
-  getParentRoute: () => rootRouteImport,
+  id: '/',
+  path: '/',
+  getParentRoute: () => DashboardRouteRoute,
 } as any)
 const DashboardUploadDocumentIndexRoute =
   DashboardUploadDocumentIndexRouteImport.update({
-    id: '/dashboard/upload-document/',
-    path: '/dashboard/upload-document/',
-    getParentRoute: () => rootRouteImport,
+    id: '/upload-document/',
+    path: '/upload-document/',
+    getParentRoute: () => DashboardRouteRoute,
   } as any)
 const DashboardSettingsIndexRoute = DashboardSettingsIndexRouteImport.update({
-  id: '/dashboard/settings/',
-  path: '/dashboard/settings/',
-  getParentRoute: () => rootRouteImport,
+  id: '/settings/',
+  path: '/settings/',
+  getParentRoute: () => DashboardRouteRoute,
 } as any)
 const DashboardProfileIndexRoute = DashboardProfileIndexRouteImport.update({
-  id: '/dashboard/profile/',
-  path: '/dashboard/profile/',
-  getParentRoute: () => rootRouteImport,
+  id: '/profile/',
+  path: '/profile/',
+  getParentRoute: () => DashboardRouteRoute,
 } as any)
 const DashboardHistoryIndexRoute = DashboardHistoryIndexRouteImport.update({
-  id: '/dashboard/history/',
-  path: '/dashboard/history/',
-  getParentRoute: () => rootRouteImport,
+  id: '/history/',
+  path: '/history/',
+  getParentRoute: () => DashboardRouteRoute,
+} as any)
+const DashboardFactCheckIndexRoute = DashboardFactCheckIndexRouteImport.update({
+  id: '/fact-check/',
+  path: '/fact-check/',
+  getParentRoute: () => DashboardRouteRoute,
 } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/dashboard/fact-check': typeof DashboardFactCheckRoute
+  '/dashboard': typeof DashboardRouteRouteWithChildren
   '/dashboard/': typeof DashboardIndexRoute
   '/login/': typeof LoginIndexRoute
   '/signup/': typeof SignupIndexRoute
+  '/dashboard/fact-check/': typeof DashboardFactCheckIndexRoute
   '/dashboard/history/': typeof DashboardHistoryIndexRoute
   '/dashboard/profile/': typeof DashboardProfileIndexRoute
   '/dashboard/settings/': typeof DashboardSettingsIndexRoute
@@ -79,10 +86,10 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/dashboard/fact-check': typeof DashboardFactCheckRoute
   '/dashboard': typeof DashboardIndexRoute
   '/login': typeof LoginIndexRoute
   '/signup': typeof SignupIndexRoute
+  '/dashboard/fact-check': typeof DashboardFactCheckIndexRoute
   '/dashboard/history': typeof DashboardHistoryIndexRoute
   '/dashboard/profile': typeof DashboardProfileIndexRoute
   '/dashboard/settings': typeof DashboardSettingsIndexRoute
@@ -91,10 +98,11 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/dashboard/fact-check': typeof DashboardFactCheckRoute
+  '/dashboard': typeof DashboardRouteRouteWithChildren
   '/dashboard/': typeof DashboardIndexRoute
   '/login/': typeof LoginIndexRoute
   '/signup/': typeof SignupIndexRoute
+  '/dashboard/fact-check/': typeof DashboardFactCheckIndexRoute
   '/dashboard/history/': typeof DashboardHistoryIndexRoute
   '/dashboard/profile/': typeof DashboardProfileIndexRoute
   '/dashboard/settings/': typeof DashboardSettingsIndexRoute
@@ -104,10 +112,11 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/dashboard/fact-check'
+    | '/dashboard'
     | '/dashboard/'
     | '/login/'
     | '/signup/'
+    | '/dashboard/fact-check/'
     | '/dashboard/history/'
     | '/dashboard/profile/'
     | '/dashboard/settings/'
@@ -115,10 +124,10 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/dashboard/fact-check'
     | '/dashboard'
     | '/login'
     | '/signup'
+    | '/dashboard/fact-check'
     | '/dashboard/history'
     | '/dashboard/profile'
     | '/dashboard/settings'
@@ -126,10 +135,11 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/dashboard/fact-check'
+    | '/dashboard'
     | '/dashboard/'
     | '/login/'
     | '/signup/'
+    | '/dashboard/fact-check/'
     | '/dashboard/history/'
     | '/dashboard/profile/'
     | '/dashboard/settings/'
@@ -138,18 +148,20 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  DashboardFactCheckRoute: typeof DashboardFactCheckRoute
-  DashboardIndexRoute: typeof DashboardIndexRoute
+  DashboardRouteRoute: typeof DashboardRouteRouteWithChildren
   LoginIndexRoute: typeof LoginIndexRoute
   SignupIndexRoute: typeof SignupIndexRoute
-  DashboardHistoryIndexRoute: typeof DashboardHistoryIndexRoute
-  DashboardProfileIndexRoute: typeof DashboardProfileIndexRoute
-  DashboardSettingsIndexRoute: typeof DashboardSettingsIndexRoute
-  DashboardUploadDocumentIndexRoute: typeof DashboardUploadDocumentIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -173,59 +185,76 @@ declare module '@tanstack/react-router' {
     }
     '/dashboard/': {
       id: '/dashboard/'
-      path: '/dashboard'
+      path: '/'
       fullPath: '/dashboard/'
       preLoaderRoute: typeof DashboardIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard/fact-check': {
-      id: '/dashboard/fact-check'
-      path: '/dashboard/fact-check'
-      fullPath: '/dashboard/fact-check'
-      preLoaderRoute: typeof DashboardFactCheckRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof DashboardRouteRoute
     }
     '/dashboard/upload-document/': {
       id: '/dashboard/upload-document/'
-      path: '/dashboard/upload-document'
+      path: '/upload-document'
       fullPath: '/dashboard/upload-document/'
       preLoaderRoute: typeof DashboardUploadDocumentIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof DashboardRouteRoute
     }
     '/dashboard/settings/': {
       id: '/dashboard/settings/'
-      path: '/dashboard/settings'
+      path: '/settings'
       fullPath: '/dashboard/settings/'
       preLoaderRoute: typeof DashboardSettingsIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof DashboardRouteRoute
     }
     '/dashboard/profile/': {
       id: '/dashboard/profile/'
-      path: '/dashboard/profile'
+      path: '/profile'
       fullPath: '/dashboard/profile/'
       preLoaderRoute: typeof DashboardProfileIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof DashboardRouteRoute
     }
     '/dashboard/history/': {
       id: '/dashboard/history/'
-      path: '/dashboard/history'
+      path: '/history'
       fullPath: '/dashboard/history/'
       preLoaderRoute: typeof DashboardHistoryIndexRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof DashboardRouteRoute
+    }
+    '/dashboard/fact-check/': {
+      id: '/dashboard/fact-check/'
+      path: '/fact-check'
+      fullPath: '/dashboard/fact-check/'
+      preLoaderRoute: typeof DashboardFactCheckIndexRouteImport
+      parentRoute: typeof DashboardRouteRoute
     }
   }
 }
 
-const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  DashboardFactCheckRoute: DashboardFactCheckRoute,
+interface DashboardRouteRouteChildren {
+  DashboardIndexRoute: typeof DashboardIndexRoute
+  DashboardFactCheckIndexRoute: typeof DashboardFactCheckIndexRoute
+  DashboardHistoryIndexRoute: typeof DashboardHistoryIndexRoute
+  DashboardProfileIndexRoute: typeof DashboardProfileIndexRoute
+  DashboardSettingsIndexRoute: typeof DashboardSettingsIndexRoute
+  DashboardUploadDocumentIndexRoute: typeof DashboardUploadDocumentIndexRoute
+}
+
+const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardIndexRoute: DashboardIndexRoute,
-  LoginIndexRoute: LoginIndexRoute,
-  SignupIndexRoute: SignupIndexRoute,
+  DashboardFactCheckIndexRoute: DashboardFactCheckIndexRoute,
   DashboardHistoryIndexRoute: DashboardHistoryIndexRoute,
   DashboardProfileIndexRoute: DashboardProfileIndexRoute,
   DashboardSettingsIndexRoute: DashboardSettingsIndexRoute,
   DashboardUploadDocumentIndexRoute: DashboardUploadDocumentIndexRoute,
+}
+
+const DashboardRouteRouteWithChildren = DashboardRouteRoute._addFileChildren(
+  DashboardRouteRouteChildren,
+)
+
+const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
+  DashboardRouteRoute: DashboardRouteRouteWithChildren,
+  LoginIndexRoute: LoginIndexRoute,
+  SignupIndexRoute: SignupIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
