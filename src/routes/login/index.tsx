@@ -1,6 +1,6 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, Link } from '@tanstack/react-router';
 import { useState } from 'react';
-import { Mail, Lock, FileCheck, CheckCircle, Link, ArrowRight } from 'lucide-react';
+import { Mail, Lock, FileCheck, ArrowRight } from 'lucide-react';
 import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Label } from '../../components/ui/label';
@@ -77,29 +77,12 @@ function LoginComponent() {
           </form>
 
           <div className="mt-6 text-center text-sm text-indigo-600 hover:text-indigo-800">
-            Don't have an account? <Link to="/signup">Sign up</Link>
+            Don't have an account?{' '}
+            <Link to="/signup" className="underline">
+              Sign up
+            </Link>
           </div>
         </Card>
-
-        {/* Features */}
-        <div className="mt-8 space-y-3">
-          <div className="flex items-center gap-3 text-sm text-gray-700">
-            <CheckCircle className="size-5 text-green-600 shrink-0" />
-            <span>AI-powered fact verification</span>
-          </div>
-          <div className="flex items-center gap-3 text-sm text-gray-700">
-            <CheckCircle className="size-5 text-green-600 shrink-0" />
-            <span>Cross-reference with trusted sources</span>
-          </div>
-          <div className="flex items-center gap-3 text-sm text-gray-700">
-            <CheckCircle className="size-5 text-green-600 shrink-0" />
-            <span>Upload custom policy documents</span>
-          </div>
-          <div className="flex items-center gap-3 text-sm text-gray-700">
-            <CheckCircle className="size-5 text-green-600 shrink-0" />
-            <span>Track your fact-checking history</span>
-          </div>
-        </div>
       </div>
     </div>
   );

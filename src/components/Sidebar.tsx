@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import {
   Menu,
-  X,
   Search,
   Upload,
   History,
@@ -84,46 +83,42 @@ export function Sidebar({
       {/* Sidebar */}
       <aside
         data-collapsed={isCollapsed}
-        className="fixed left-0 top-0 h-screen w-80 data-[collapsed=true]:w-0 md:data-[collapsed=true]:w-20 bg-white border-r shadow-lg z-40 transition-all duration-300 overflow-hidden"
+        className="flex shrink-0 h-full w-80 data-[collapsed=true]:w-0 md:data-[collapsed=true]:w-20 bg-white border-r shadow-lg z-40 transition-all duration-300 overflow-hidden"
       >
         <div className="flex flex-col h-full">
           {/* Header */}
-          <div className="p-4 border-b">
-            <div className="flex items-center justify-between">
-              {!isCollapsed && (
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-indigo-600 rounded-lg flex items-center justify-center">
-                    <FileCheck className="size-6 text-white" />
-                  </div>
-                  <div>
-                    <h2 className="font-semibold">FactCheck Pro</h2>
-                    <p className="text-xs text-gray-500">Verify claims instantly</p>
-                  </div>
+          <div className="p-4 border-b flex items-center justify-between">
+            {!isCollapsed && (
+              <div className="flex items-center gap-3">
+                <div className="size-10 bg-indigo-600 rounded-lg flex items-center justify-center">
+                  <FileCheck className="size-6 text-white" />
                 </div>
+                <div>
+                  <h2 className="font-semibold">FactCheck Pro</h2>
+                  <p className="text-xs text-gray-500">Verify claims instantly</p>
+                </div>
+              </div>
+            )}
+            <Button variant="ghost" size="icon" onClick={() => setIsCollapsed(!isCollapsed)}>
+              {isCollapsed ? (
+                <ChevronRight className="size-5" />
+              ) : (
+                <ChevronLeft className="size-5" />
               )}
-              <Button variant="ghost" size="icon" onClick={() => setIsCollapsed(!isCollapsed)}>
-                {isCollapsed ? (
-                  <ChevronRight className="size-5" />
-                ) : (
-                  <ChevronLeft className="size-5" />
-                )}
-              </Button>
-            </div>
+            </Button>
           </div>
 
           {/* User Profile */}
-          <div className="p-4 border-b bg-gray-50">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center shrink-0">
-                <User className="size-5 text-indigo-600" />
-              </div>
-              {!isCollapsed && (
-                <div className="flex-1 min-w-0">
-                  <p className="font-medium text-sm truncate">{userName}</p>
-                  <p className="text-xs text-gray-500">Premium Account</p>
-                </div>
-              )}
+          <div className="p-4 border-b bg-gray-50 flex items-center gap-3">
+            <div className="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center shrink-0">
+              <User className="size-5 text-indigo-600" />
             </div>
+            {!isCollapsed && (
+              <div className="flex-1 min-w-0">
+                <p className="font-medium text-sm truncate">{userName}</p>
+                <p className="text-xs text-gray-500">Premium Account</p>
+              </div>
+            )}
           </div>
 
           {/* Navigation Menu */}
