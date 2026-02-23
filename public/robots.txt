@@ -1,0 +1,19 @@
+# robots.txt for Clear View - AI Fact Checker
+# https://clearviewcce.vercel.app
+
+User-agent: *
+Allow: /
+
+# Important pages to crawl
+Allow: /dashboard/fact-check
+Allow: /dashboard/upload-document
+Allow: /dashboard/history
+Allow: /dashboard/settings
+Allow: /login
+Allow: /signup
+
+# Sitemap location
+Sitemap: https://clearviewcce.vercel.app/sitemap.xml
+
+# Crawl delay (optional - be nice to servers)
+Crawl-delay: 1
