@@ -13,13 +13,11 @@ interface SettingsPageProps {
 
 export function SettingsPage({ userName, userEmail }: SettingsPageProps) {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+    <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 p-6">
       <div className="max-w-4xl mx-auto pt-4">
         <div className="mb-8">
           <h1 className="mb-2">Settings</h1>
-          <p className="text-gray-600">
-            Manage your account preferences and application settings
-          </p>
+          <p className="text-gray-600">Manage your account preferences and application settings</p>
         </div>
 
         {/* Profile Settings */}
@@ -37,9 +35,7 @@ export function SettingsPage({ userName, userEmail }: SettingsPageProps) {
               <Label htmlFor="email">Email Address</Label>
               <Input id="email" type="email" defaultValue={userEmail} className="mt-1" />
             </div>
-            <Button className="bg-indigo-600 hover:bg-indigo-700">
-              Save Changes
-            </Button>
+            <Button className="bg-indigo-600 hover:bg-indigo-700">Save Changes</Button>
           </div>
         </Card>
 
@@ -92,9 +88,7 @@ export function SettingsPage({ userName, userEmail }: SettingsPageProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-medium">Save Search History</p>
-                <p className="text-sm text-gray-600">
-                  Keep a record of your fact-checking history
-                </p>
+                <p className="text-sm text-gray-600">Keep a record of your fact-checking history</p>
               </div>
               <Switch defaultChecked />
             </div>
@@ -127,9 +121,7 @@ export function SettingsPage({ userName, userEmail }: SettingsPageProps) {
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-medium">Export Data</p>
-                <p className="text-sm text-gray-600">
-                  Download all your fact-checking data
-                </p>
+                <p className="text-sm text-gray-600">Download all your fact-checking data</p>
               </div>
               <Button variant="outline">Export</Button>
             </div>

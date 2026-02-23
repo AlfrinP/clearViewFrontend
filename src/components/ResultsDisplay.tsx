@@ -105,7 +105,7 @@ export function ResultsDisplay({ result, onNewCheck }: ResultsDisplayProps) {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+    <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 p-6">
       <div className="max-w-5xl mx-auto pt-4">
         <Button onClick={onNewCheck} variant="ghost" className="mb-4 hover:bg-white/50">
           <ArrowLeft className="mr-2 size-4" />

@@ -1,4 +1,4 @@
-import { Search, Calendar, Filter, FileCheck } from 'lucide-react';
+import { Search, Calendar, FileCheck } from 'lucide-react';
 import { Card } from './ui/card';
 import { Badge } from './ui/badge';
 import { Button } from './ui/button';
@@ -29,9 +29,10 @@ export function HistoryPage({ conversations, onLoadConversation }: HistoryPagePr
     return 'bg-yellow-100 text-yellow-800';
   };
 
-  const filteredConversations = conversations.filter((conv) => {
+  const filteredConversations = conversations.filter(conv => {
     const matchesSearch = conv.claim.toLowerCase().includes(searchQuery.toLowerCase());
-    const matchesFilter = filterVerdict === 'all' || conv.verdict.toLowerCase().includes(filterVerdict);
+    const matchesFilter =
+      filterVerdict === 'all' || conv.verdict.toLowerCase().includes(filterVerdict);
     return matchesSearch && matchesFilter;
   });
 
@@ -46,57 +47,55 @@ export function HistoryPage({ conversations, onLoadConversation }: HistoryPagePr
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+    <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 p-6">
       <div className="max-w-5xl mx-auto pt-4">
         <div className="mb-8">
           <h1 className="mb-2">Fact Check History</h1>
-          <p className="text-gray-600">
-            View and revisit your previous fact-checking sessions
-          </p>
+          <p className="text-gray-600">View and revisit your previous fact-checking sessions</p>
         </div>
 
         {/* Search and Filter */}
-        <Card className="p-4 mb-6 shadow-lg">
-          <div className="flex flex-col md:flex-row gap-4">
-            <div className="flex-1 relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 size-5 text-gray-400" />
-              <Input
-                placeholder="Search claims..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="pl-10"
-              />
-            </div>
-            <div className="flex gap-2">
-              <Button
-                variant={filterVerdict === 'all' ? 'default' : 'outline'}
-                onClick={() => setFilterVerdict('all')}
-                className={filterVerdict === 'all' ? 'bg-indigo-600' : ''}
-              >
-                All
-              </Button>
-              <Button
-                variant={filterVerdict === 'true' ? 'default' : 'outline'}
-                onClick={() => setFilterVerdict('true')}
-                className={filterVerdict === 'true' ? 'bg-green-600' : ''}
-              >
-                True
-              </Button>
-              <Button
-                variant={filterVerdict === 'false' ? 'default' : 'outline'}
-                onClick={() => setFilterVerdict('false')}
-                className={filterVerdict === 'false' ? 'bg-red-600' : ''}
-              >
-                False
-              </Button>
-            </div>
+        <Card className="p-4 mb-6 shadow-lg flex flex-col md:flex-row gap-4">
+          <div className="flex-1 relative">
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 size-5 text-gray-400" />
+            <Input
+              placeholder="Search claims..."
+              value={searchQuery}
+              onChange={e => setSearchQuery(e.target.value)}
+              className="pl-10"
+            />
+          </div>
+          <div className="flex gap-2">
+            <Button
+              variant="outline"
+              onClick={() => setFilterVerdict('all')}
+              className={
+                filterVerdict === 'all' ? 'bg-indigo-600 border-indigo-600 text-white' : ''
+              }
+            >
+              All
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => setFilterVerdict('true')}
+              className={filterVerdict === 'true' ? 'bg-green-600 border-green-600 text-white' : ''}
+            >
+              True
+            </Button>
+            <Button
+              variant="outline"
+              onClick={() => setFilterVerdict('false')}
+              className={filterVerdict === 'false' ? 'bg-red-600 border-red-600 text-white' : ''}
+            >
+              False
+            </Button>
           </div>
         </Card>
 
         {/* Conversations List */}
         {filteredConversations.length > 0 ? (
           <div className="space-y-4">
-            {filteredConversations.map((conv) => (
+            {filteredConversations.map(conv => (
               <Card
                 key={conv.id}
                 className="p-6 shadow-lg hover:shadow-xl transition-shadow cursor-pointer"
@@ -114,9 +113,7 @@ export function HistoryPage({ conversations, onLoadConversation }: HistoryPagePr
                       <span>Confidence: {(conv.confidence * 100).toFixed(0)}%</span>
                     </div>
                   </div>
-                  <Badge className={getVerdictColor(conv.verdict)}>
-                    {conv.verdict}
-                  </Badge>
+                  <Badge className={getVerdictColor(conv.verdict)}>{conv.verdict}</Badge>
                 </div>
                 <Button variant="outline" size="sm" className="mt-2">
                   <FileCheck className="mr-2 size-4" />
@@ -127,7 +124,7 @@ export function HistoryPage({ conversations, onLoadConversation }: HistoryPagePr
           </div>
         ) : (
           <Card className="p-12 text-center shadow-lg">
-            <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100 mb-4">
+            <div className="inline-flex items-center justify-center size-16 rounded-full bg-gray-100 mb-4">
               <Search className="size-8 text-gray-400" />
             </div>
             <h3 className="mb-2">No Results Found</h3>

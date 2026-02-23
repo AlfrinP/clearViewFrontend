@@ -46,7 +46,7 @@ export function FactCheckingPage({ onSaveConversation, loadedResult }: FactCheck
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!claim.trim()) return;
 
     setIsLoading(true);
@@ -54,57 +54,62 @@ export function FactCheckingPage({ onSaveConversation, loadedResult }: FactCheck
 
     // Simulate API call - Replace with your actual API endpoint
     try {
-      // Mock API call - replace this with: 
+      // Mock API call - replace this with:
       // const response = await fetch('YOUR_API_ENDPOINT', {
       //   method: 'POST',
       //   headers: { 'Content-Type': 'application/json' },
       //   body: JSON.stringify({ claim })
       // });
       // const data = await response.json();
-      
+
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
+
       // Mock response - this will be replaced with actual API response
       const mockResult: FactCheckResult = {
         claim: claim,
-        verdict: "Mostly True",
+        verdict: 'Mostly True',
         confidence: 0.85,
         policy_sources: [
           {
-            title: "CDC Guidelines on COVID-19 Vaccination",
-            url: "https://www.cdc.gov/coronavirus/2019-ncov/vaccines/",
-            snippet: "The CDC recommends COVID-19 vaccines for everyone ages 6 months and older. Vaccines are safe and effective at preventing serious illness.",
-            domain: "cdc.gov",
-            trust_score: 0.95
+            title: 'CDC Guidelines on COVID-19 Vaccination',
+            url: 'https://www.cdc.gov/coronavirus/2019-ncov/vaccines/',
+            snippet:
+              'The CDC recommends COVID-19 vaccines for everyone ages 6 months and older. Vaccines are safe and effective at preventing serious illness.',
+            domain: 'cdc.gov',
+            trust_score: 0.95,
           },
           {
-            title: "FDA COVID-19 Vaccine Authorization",
-            url: "https://www.fda.gov/emergency-preparedness-and-response/coronavirus-disease-2019-covid-19/covid-19-vaccines",
-            snippet: "FDA has authorized and approved COVID-19 vaccines after thorough testing and review of safety data.",
-            domain: "fda.gov",
-            trust_score: 0.98
-          }
+            title: 'FDA COVID-19 Vaccine Authorization',
+            url: 'https://www.fda.gov/emergency-preparedness-and-response/coronavirus-disease-2019-covid-19/covid-19-vaccines',
+            snippet:
+              'FDA has authorized and approved COVID-19 vaccines after thorough testing and review of safety data.',
+            domain: 'fda.gov',
+            trust_score: 0.98,
+          },
         ],
         external_sources: [
           {
-            title: "Johns Hopkins Medicine: COVID-19 Vaccines",
-            url: "https://www.hopkinsmedicine.org/health/conditions-and-diseases/coronavirus/covid-19-vaccines",
-            snippet: "COVID-19 vaccines are safe and have been extensively tested. They significantly reduce the risk of severe illness.",
-            domain: "hopkinsmedicine.org",
-            trust_score: 0.92
+            title: 'Johns Hopkins Medicine: COVID-19 Vaccines',
+            url: 'https://www.hopkinsmedicine.org/health/conditions-and-diseases/coronavirus/covid-19-vaccines',
+            snippet:
+              'COVID-19 vaccines are safe and have been extensively tested. They significantly reduce the risk of severe illness.',
+            domain: 'hopkinsmedicine.org',
+            trust_score: 0.92,
           },
           {
-            title: "Mayo Clinic: COVID-19 Vaccine Facts",
-            url: "https://www.mayoclinic.org/diseases-conditions/coronavirus/in-depth/coronavirus-vaccine/art-20484859",
-            snippet: "COVID-19 vaccines have undergone rigorous testing and continue to be monitored for safety.",
-            domain: "mayoclinic.org",
-            trust_score: 0.90
-          }
+            title: 'Mayo Clinic: COVID-19 Vaccine Facts',
+            url: 'https://www.mayoclinic.org/diseases-conditions/coronavirus/in-depth/coronavirus-vaccine/art-20484859',
+            snippet:
+              'COVID-19 vaccines have undergone rigorous testing and continue to be monitored for safety.',
+            domain: 'mayoclinic.org',
+            trust_score: 0.9,
+          },
         ],
-        reasoning: "The claim aligns with current medical consensus and government health agency guidelines. Multiple authoritative sources, including the CDC and FDA, confirm that COVID-19 vaccines have undergone extensive safety testing and continue to be monitored. While no medical intervention is completely without risk, the evidence strongly supports the safety profile of authorized COVID-19 vaccines.",
-        conflicts_found: false
+        reasoning:
+          'The claim aligns with current medical consensus and government health agency guidelines. Multiple authoritative sources, including the CDC and FDA, confirm that COVID-19 vaccines have undergone extensive safety testing and continue to be monitored. While no medical intervention is completely without risk, the evidence strongly supports the safety profile of authorized COVID-19 vaccines.',
+        conflicts_found: false,
       };
-      
+
       setResult(mockResult);
       if (onSaveConversation) {
         onSaveConversation(mockResult);
@@ -127,7 +132,7 @@ export function FactCheckingPage({ onSaveConversation, loadedResult }: FactCheck
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
+    <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 p-6">
       <div className="max-w-4xl mx-auto pt-4">
         <div className="text-center mb-8">
           <h1 className="mb-2">Fact Checker</h1>
@@ -146,7 +151,7 @@ export function FactCheckingPage({ onSaveConversation, loadedResult }: FactCheck
                 id="claim"
                 placeholder="e.g., COVID-19 vaccines are safe and effective..."
                 value={claim}
-                onChange={(e) => setClaim(e.target.value)}
+                onChange={e => setClaim(e.target.value)}
                 className="min-h-[150px] resize-none"
                 disabled={isLoading}
               />
@@ -189,8 +194,8 @@ export function FactCheckingPage({ onSaveConversation, loadedResult }: FactCheck
 
         <div className="mt-6 text-center text-sm text-gray-600">
           <p>
-            Our fact-checking system cross-references your claim with government policies,
-            medical databases, and verified external sources.
+            Our fact-checking system cross-references your claim with government policies, medical
+            databases, and verified external sources.
           </p>
         </div>
       </div>
