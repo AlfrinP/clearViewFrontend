@@ -16,7 +16,6 @@ import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as DashboardIndexRouteImport } from './routes/dashboard/index'
 import { Route as DashboardUploadDocumentIndexRouteImport } from './routes/dashboard/upload-document/index'
 import { Route as DashboardSettingsIndexRouteImport } from './routes/dashboard/settings/index'
-import { Route as DashboardProfileIndexRouteImport } from './routes/dashboard/profile/index'
 import { Route as DashboardHistoryIndexRouteImport } from './routes/dashboard/history/index'
 import { Route as DashboardFactCheckIndexRouteImport } from './routes/dashboard/fact-check/index'
 
@@ -56,11 +55,6 @@ const DashboardSettingsIndexRoute = DashboardSettingsIndexRouteImport.update({
   path: '/settings/',
   getParentRoute: () => DashboardRouteRoute,
 } as any)
-const DashboardProfileIndexRoute = DashboardProfileIndexRouteImport.update({
-  id: '/profile/',
-  path: '/profile/',
-  getParentRoute: () => DashboardRouteRoute,
-} as any)
 const DashboardHistoryIndexRoute = DashboardHistoryIndexRouteImport.update({
   id: '/history/',
   path: '/history/',
@@ -80,7 +74,6 @@ export interface FileRoutesByFullPath {
   '/signup/': typeof SignupIndexRoute
   '/dashboard/fact-check/': typeof DashboardFactCheckIndexRoute
   '/dashboard/history/': typeof DashboardHistoryIndexRoute
-  '/dashboard/profile/': typeof DashboardProfileIndexRoute
   '/dashboard/settings/': typeof DashboardSettingsIndexRoute
   '/dashboard/upload-document/': typeof DashboardUploadDocumentIndexRoute
 }
@@ -91,7 +84,6 @@ export interface FileRoutesByTo {
   '/signup': typeof SignupIndexRoute
   '/dashboard/fact-check': typeof DashboardFactCheckIndexRoute
   '/dashboard/history': typeof DashboardHistoryIndexRoute
-  '/dashboard/profile': typeof DashboardProfileIndexRoute
   '/dashboard/settings': typeof DashboardSettingsIndexRoute
   '/dashboard/upload-document': typeof DashboardUploadDocumentIndexRoute
 }
@@ -104,7 +96,6 @@ export interface FileRoutesById {
   '/signup/': typeof SignupIndexRoute
   '/dashboard/fact-check/': typeof DashboardFactCheckIndexRoute
   '/dashboard/history/': typeof DashboardHistoryIndexRoute
-  '/dashboard/profile/': typeof DashboardProfileIndexRoute
   '/dashboard/settings/': typeof DashboardSettingsIndexRoute
   '/dashboard/upload-document/': typeof DashboardUploadDocumentIndexRoute
 }
@@ -118,7 +109,6 @@ export interface FileRouteTypes {
     | '/signup/'
     | '/dashboard/fact-check/'
     | '/dashboard/history/'
-    | '/dashboard/profile/'
     | '/dashboard/settings/'
     | '/dashboard/upload-document/'
   fileRoutesByTo: FileRoutesByTo
@@ -129,7 +119,6 @@ export interface FileRouteTypes {
     | '/signup'
     | '/dashboard/fact-check'
     | '/dashboard/history'
-    | '/dashboard/profile'
     | '/dashboard/settings'
     | '/dashboard/upload-document'
   id:
@@ -141,7 +130,6 @@ export interface FileRouteTypes {
     | '/signup/'
     | '/dashboard/fact-check/'
     | '/dashboard/history/'
-    | '/dashboard/profile/'
     | '/dashboard/settings/'
     | '/dashboard/upload-document/'
   fileRoutesById: FileRoutesById
@@ -204,13 +192,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DashboardSettingsIndexRouteImport
       parentRoute: typeof DashboardRouteRoute
     }
-    '/dashboard/profile/': {
-      id: '/dashboard/profile/'
-      path: '/profile'
-      fullPath: '/dashboard/profile/'
-      preLoaderRoute: typeof DashboardProfileIndexRouteImport
-      parentRoute: typeof DashboardRouteRoute
-    }
     '/dashboard/history/': {
       id: '/dashboard/history/'
       path: '/history'
@@ -232,7 +213,6 @@ interface DashboardRouteRouteChildren {
   DashboardIndexRoute: typeof DashboardIndexRoute
   DashboardFactCheckIndexRoute: typeof DashboardFactCheckIndexRoute
   DashboardHistoryIndexRoute: typeof DashboardHistoryIndexRoute
-  DashboardProfileIndexRoute: typeof DashboardProfileIndexRoute
   DashboardSettingsIndexRoute: typeof DashboardSettingsIndexRoute
   DashboardUploadDocumentIndexRoute: typeof DashboardUploadDocumentIndexRoute
 }
@@ -241,7 +221,6 @@ const DashboardRouteRouteChildren: DashboardRouteRouteChildren = {
   DashboardIndexRoute: DashboardIndexRoute,
   DashboardFactCheckIndexRoute: DashboardFactCheckIndexRoute,
   DashboardHistoryIndexRoute: DashboardHistoryIndexRoute,
-  DashboardProfileIndexRoute: DashboardProfileIndexRoute,
   DashboardSettingsIndexRoute: DashboardSettingsIndexRoute,
   DashboardUploadDocumentIndexRoute: DashboardUploadDocumentIndexRoute,
 }

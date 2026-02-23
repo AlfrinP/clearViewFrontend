@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { Upload, X, CheckCircle, Loader2, FileText, DotIcon } from 'lucide-react';
-import { Button } from './ui/button';
-import { Card } from './ui/card';
-import { Badge } from './ui/badge';
-import { DocumentUploadInfo } from '../utils/constants';
+import { Button } from '../../../components/ui/button';
+import { Card } from '../../../components/ui/card';
+import { Badge } from '../../../components/ui/badge';
+import { DocumentUploadInfo } from '../../../utils/constants';
 
 interface UploadedDocument {
   id: string;

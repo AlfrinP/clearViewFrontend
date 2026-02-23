@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { Search, Loader2 } from 'lucide-react';
-import { Button } from './ui/button';
-import { Textarea } from './ui/textarea';
-import { Card } from './ui/card';
-import { ResultsDisplay } from './ResultsDisplay';
+import { Button } from '../../../components/ui/button';
+import { Textarea } from '../../../components/ui/textarea';
+import { Card } from '../../../components/ui/card';
+import { ResultsDisplay } from '../../../components/ResultsDisplay';
 
 interface FactCheckResult {
   claim: string;

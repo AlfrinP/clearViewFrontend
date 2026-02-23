@@ -1,10 +1,10 @@
 import { User, Bell, Shield, Database, Mail } from 'lucide-react';
-import { Card } from './ui/card';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Button } from './ui/button';
-import { Switch } from './ui/switch';
-import { Separator } from './ui/separator';
+import { Card } from '../../../components/ui/card';
+import { Input } from '../../../components/ui/input';
+import { Label } from '../../../components/ui/label';
+import { Button } from '../../../components/ui/button';
+import { Switch } from '../../../components/ui/switch';
+import { Separator } from '../../../components/ui/separator';
 
 interface SettingsPageProps {
   userName: string;
