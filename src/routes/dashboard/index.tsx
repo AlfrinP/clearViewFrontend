@@ -52,7 +52,7 @@ function DashboardComponent() {
 
   const handleLogout = () => {
     // Replace with real auth/logout when available
-    navigate({ to: '/' });
+    navigate({ to: '/login' });
   };
 
   return (
