@@ -1,13 +1,9 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { Navigate, createFileRoute } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/')({
-  component: HomeComponent,
+  component: IndexRouteComponent,
 });
 
-function HomeComponent() {
-  return (
-    <div className="p-2">
-      <h3>Welcome Home!</h3>
-    </div>
-  );
+function IndexRouteComponent() {
+  return <Navigate to="/dashboard/fact-check" />;
 }

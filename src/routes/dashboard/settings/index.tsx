@@ -1,13 +1,11 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { SettingsPage } from '../../../components/SettingsPage';
 
-export const Route = createFileRoute('/settings')({
-  component: SettingsComponent,
+export const Route = createFileRoute('/dashboard/settings/')({
+  component: SettingsRouteComponent,
 });
 
-function SettingsComponent() {
-  return (
-    <div className="p-2">
-      <h3>Welcome Settings!</h3>
-    </div>
-  );
+function SettingsRouteComponent() {
+  // Replace with real user info when auth is wired up
+  return <SettingsPage userName="User" userEmail="user@example.com" />;
 }

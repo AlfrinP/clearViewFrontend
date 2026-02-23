@@ -1,13 +1,18 @@
 import { createFileRoute } from '@tanstack/react-router';
+import { HistoryPage } from '@/components/HistoryPage';
 
-export const Route = createFileRoute('/history')({
-  component: HistoryComponent,
+export const Route = createFileRoute('/dashboard/history/')({
+  component: HistoryRouteComponent,
 });
 
-function HistoryComponent() {
+function HistoryRouteComponent() {
+  // Wire real conversations and load logic later; for now pass empty data
   return (
-    <div className="p-2">
-      <h3>Welcome History!</h3>
-    </div>
+    <HistoryPage
+      conversations={[]}
+      onLoadConversation={() => {
+        // no-op for now
+      }}
+    />
   );
 }
