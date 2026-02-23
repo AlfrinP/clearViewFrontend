@@ -1,15 +1,16 @@
+import { createFileRoute } from '@tanstack/react-router';
 import { useState } from 'react';
-import { Mail, Lock, FileCheck, CheckCircle } from 'lucide-react';
-import { Button } from './ui/button';
-import { Input } from './ui/input';
-import { Label } from './ui/label';
-import { Card } from './ui/card';
+import { Mail, Lock, FileCheck, CheckCircle, Link, ArrowRight } from 'lucide-react';
+import { Button } from '../../components/ui/button';
+import { Input } from '../../components/ui/input';
+import { Label } from '../../components/ui/label';
+import { Card } from '../../components/ui/card';
 
-interface LoginPageProps {
-  onLogin: (email: string, name: string) => void;
-}
+export const Route = createFileRoute('/signup')({
+  component: SignupComponent,
+});
 
-export function LoginPage({ onLogin }: LoginPageProps) {
+function SignupComponent() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isSignup, setIsSignup] = useState(false);
@@ -19,12 +20,10 @@ export function LoginPage({ onLogin }: LoginPageProps) {
     e.preventDefault();
     // In a real app, this would authenticate with your backend
     // For now, we'll just simulate a successful login
-    const userName = isSignup ? name : email.split('@')[0];
-    onLogin(email, userName);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-6">
       <div className="max-w-md w-full">
         {/* Logo and Header */}
         <div className="text-center mb-8">
@@ -39,25 +38,21 @@ export function LoginPage({ onLogin }: LoginPageProps) {
 
         {/* Login/Signup Form */}
         <Card className="p-8 shadow-xl">
-          <h2 className="mb-6 text-center">
-            {isSignup ? 'Create Account' : 'Welcome Back'}
-          </h2>
+          <h2 className="mb-6 text-center">{isSignup ? 'Create Account' : 'Welcome Back'}</h2>
 
           <form onSubmit={handleSubmit} className="space-y-4">
-            {isSignup && (
-              <div>
-                <Label htmlFor="name">Full Name</Label>
-                <Input
-                  id="name"
-                  type="text"
-                  placeholder="John Doe"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required={isSignup}
-                  className="mt-1"
-                />
-              </div>
-            )}
+            <div>
+              <Label htmlFor="name">Full Name</Label>
+              <Input
+                id="name"
+                type="text"
+                placeholder="John Doe"
+                value={name}
+                onChange={e => setName(e.target.value)}
+                required={isSignup}
+                className="mt-1"
+              />
+            </div>
 
             <div>
               <Label htmlFor="email">Email</Label>
@@ -68,7 +63,7 @@ export function LoginPage({ onLogin }: LoginPageProps) {
                   type="email"
                   placeholder="you@example.com"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={e => setEmail(e.target.value)}
                   className="pl-10"
                   required
                 />
@@ -84,50 +79,40 @@ export function LoginPage({ onLogin }: LoginPageProps) {
                   type="password"
                   placeholder="••••••••"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={e => setPassword(e.target.value)}
                   className="pl-10"
                   required
                 />
               </div>
             </div>
 
-            <Button
-              type="submit"
-              className="w-full bg-indigo-600 hover:bg-indigo-700"
-              size="lg"
-            >
-              {isSignup ? 'Sign Up' : 'Sign In'}
+            <Button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700" size="lg">
+              Sign Up
+              <ArrowRight className="size-4" />
             </Button>
           </form>
 
-          <div className="mt-6 text-center">
-            <button
-              onClick={() => setIsSignup(!isSignup)}
-              className="text-sm text-indigo-600 hover:text-indigo-800"
-            >
-              {isSignup
-                ? 'Already have an account? Sign in'
-                : "Don't have an account? Sign up"}
-            </button>
+          <div className="mt-6 text-center text-sm text-indigo-600 hover:text-indigo-800">
+            Already have an account? <Link to="/login">Sign in</Link>
           </div>
         </Card>
 
         {/* Features */}
         <div className="mt-8 space-y-3">
           <div className="flex items-center gap-3 text-sm text-gray-700">
-            <CheckCircle className="size-5 text-green-600 flex-shrink-0" />
+            <CheckCircle className="size-5 text-green-600 shrink-0" />
             <span>AI-powered fact verification</span>
           </div>
           <div className="flex items-center gap-3 text-sm text-gray-700">
-            <CheckCircle className="size-5 text-green-600 flex-shrink-0" />
+            <CheckCircle className="size-5 text-green-600 shrink-0" />
             <span>Cross-reference with trusted sources</span>
           </div>
           <div className="flex items-center gap-3 text-sm text-gray-700">
-            <CheckCircle className="size-5 text-green-600 flex-shrink-0" />
+            <CheckCircle className="size-5 text-green-600 shrink-0" />
             <span>Upload custom policy documents</span>
           </div>
           <div className="flex items-center gap-3 text-sm text-gray-700">
-            <CheckCircle className="size-5 text-green-600 flex-shrink-0" />
+            <CheckCircle className="size-5 text-green-600 shrink-0" />
             <span>Track your fact-checking history</span>
           </div>
         </div>

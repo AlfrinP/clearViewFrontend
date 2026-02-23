@@ -99,12 +99,12 @@ export default function App() {
     setLoadedConversation(null);
   };
 
-  if (!isAuthenticated) {
-    return <LoginPage onLogin={handleLogin} />;
-  }
+  // if (!isAuthenticated) {
+  //   return <LoginPage onLogin={handleLogin} />;
+  // }
 
   return (
-    <div className="flex min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="flex min-h-screen bg-linear-to-br from-blue-50 to-indigo-100">
       <Sidebar
         activePage={activePage}
         onNavigate={handleNavigate}
