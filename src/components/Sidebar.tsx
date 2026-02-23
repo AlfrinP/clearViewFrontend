@@ -96,7 +96,7 @@ export function Sidebar({
                   <FileCheck className="size-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="font-semibold">FactCheck Pro</h2>
+                  <h2 className="font-semibold">Clear View</h2>
                   <p className="text-xs text-gray-500">Verify claims instantly</p>
                 </div>
               </div>
