@@ -50,8 +50,7 @@ export function ResultsDisplay({ result, onNewCheck }: ResultsDisplayProps) {
 
   const getVerdictIcon = (verdict: string) => {
     const v = verdict.toLowerCase();
-    if (v.includes('true') && !v.includes('false'))
-      return <CheckCircle2 className="size-8" />;
+    if (v.includes('true') && !v.includes('false')) return <CheckCircle2 className="size-8" />;
     if (v.includes('false')) return <XCircle className="size-8" />;
     return <AlertTriangle className="size-8" />;
   };
@@ -108,11 +107,7 @@ export function ResultsDisplay({ result, onNewCheck }: ResultsDisplayProps) {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
       <div className="max-w-5xl mx-auto pt-4">
-        <Button
-          onClick={onNewCheck}
-          variant="ghost"
-          className="mb-4 hover:bg-white/50"
-        >
+        <Button onClick={onNewCheck} variant="ghost" className="mb-4 hover:bg-white/50">
           <ArrowLeft className="mr-2 size-4" />
           Check Another Fact
         </Button>
@@ -120,7 +115,7 @@ export function ResultsDisplay({ result, onNewCheck }: ResultsDisplayProps) {
         {/* Claim Section */}
         <Card className="p-6 mb-6 shadow-lg">
           <div className="flex items-start gap-3">
-            <FileText className="size-6 text-indigo-600 mt-1 flex-shrink-0" />
+            <FileText className="size-6 text-indigo-600 mt-1 shrink-0" />
             <div className="flex-1">
               <h3 className="mb-2">Claim Analyzed</h3>
               <p className="text-gray-700 leading-relaxed">{result.claim}</p>
@@ -129,9 +124,7 @@ export function ResultsDisplay({ result, onNewCheck }: ResultsDisplayProps) {
         </Card>
 
         {/* Verdict Section */}
-        <Card
-          className={`p-8 mb-6 shadow-lg border-2 ${getVerdictBg(result.verdict)}`}
-        >
+        <Card className={`p-8 mb-6 shadow-lg border-2 ${getVerdictBg(result.verdict)}`}>
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-4">
               <div className={getVerdictColor(result.verdict)}>
@@ -154,9 +147,7 @@ export function ResultsDisplay({ result, onNewCheck }: ResultsDisplayProps) {
 
           <div>
             <div className="flex items-center justify-between mb-2">
-              <span className="text-sm font-medium text-gray-700">
-                Confidence Level
-              </span>
+              <span className="text-sm font-medium text-gray-700">Confidence Level</span>
               <span className="font-semibold text-gray-900">
                 {(result.confidence * 100).toFixed(0)}%
               </span>
@@ -168,7 +159,7 @@ export function ResultsDisplay({ result, onNewCheck }: ResultsDisplayProps) {
         {/* Reasoning Section */}
         <Card className="p-6 mb-6 shadow-lg">
           <div className="flex items-start gap-3">
-            <TrendingUp className="size-6 text-indigo-600 mt-1 flex-shrink-0" />
+            <TrendingUp className="size-6 text-indigo-600 mt-1 shrink-0" />
             <div className="flex-1">
               <h3 className="mb-3">Analysis & Reasoning</h3>
               <p className="text-gray-700 leading-relaxed">{result.reasoning}</p>
@@ -179,7 +170,7 @@ export function ResultsDisplay({ result, onNewCheck }: ResultsDisplayProps) {
         {/* Sources Section */}
         <Card className="p-6 shadow-lg">
           <h3 className="mb-4">Supporting Sources</h3>
-          
+
           <Tabs defaultValue="policy" className="w-full">
             <TabsList className="grid w-full grid-cols-2 mb-6">
               <TabsTrigger value="policy">
@@ -196,9 +187,7 @@ export function ResultsDisplay({ result, onNewCheck }: ResultsDisplayProps) {
                   <SourceCard key={index} source={source} />
                 ))
               ) : (
-                <p className="text-center text-gray-500 py-8">
-                  No policy sources found
-                </p>
+                <p className="text-center text-gray-500 py-8">No policy sources found</p>
               )}
             </TabsContent>
 
@@ -208,20 +197,14 @@ export function ResultsDisplay({ result, onNewCheck }: ResultsDisplayProps) {
                   <SourceCard key={index} source={source} />
                 ))
               ) : (
-                <p className="text-center text-gray-500 py-8">
-                  No external sources found
-                </p>
+                <p className="text-center text-gray-500 py-8">No external sources found</p>
               )}
             </TabsContent>
           </Tabs>
         </Card>
 
         <div className="mt-6 text-center">
-          <Button
-            onClick={onNewCheck}
-            className="bg-indigo-600 hover:bg-indigo-700"
-            size="lg"
-          >
+          <Button onClick={onNewCheck} className="bg-indigo-600 hover:bg-indigo-700" size="lg">
             Check Another Fact
           </Button>
         </div>

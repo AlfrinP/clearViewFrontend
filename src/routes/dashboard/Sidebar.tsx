@@ -13,10 +13,9 @@ import {
   Clock,
   FileCheck,
 } from 'lucide-react';
-import { Button } from './ui/button';
-import { ScrollArea } from './ui/scroll-area';
-import { Separator } from './ui/separator';
-import { Badge } from './ui/badge';
+import { Button } from '../../components/ui/button';
+import { ScrollArea } from '../../components/ui/scroll-area';
+import { Badge } from '../../components/ui/badge';
 
 interface ConversationHistoryItem {
   id: string;
@@ -61,7 +60,7 @@ export function Sidebar({
   const formatTimestamp = (date: Date) => {
     const now = new Date();
     const diffInHours = Math.floor((now.getTime() - date.getTime()) / (1000 * 60 * 60));
-    
+
     if (diffInHours < 1) return 'Just now';
     if (diffInHours < 24) return `${diffInHours}h ago`;
     if (diffInHours < 48) return 'Yesterday';
@@ -119,7 +118,7 @@ export function Sidebar({
           {/* User Profile */}
           <div className="p-4 border-b bg-gray-50">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 bg-indigo-100 rounded-full flex items-center justify-center shrink-0">
                 <User className="size-5 text-indigo-600" />
               </div>
               {!isCollapsed && (
@@ -133,7 +132,7 @@ export function Sidebar({
 
           {/* Navigation Menu */}
           <nav className="p-3 border-b">
-            {menuItems.map((item) => {
+            {menuItems.map(item => {
               const Icon = item.icon;
               const isActive = activePage === item.id;
               return (
@@ -164,7 +163,7 @@ export function Sidebar({
               <ScrollArea className="flex-1 px-3">
                 <div className="space-y-2 pb-3">
                   {conversations.length > 0 ? (
-                    conversations.map((conv) => (
+                    conversations.map(conv => (
                       <button
                         key={conv.id}
                         onClick={() => onLoadConversation(conv.id)}
@@ -184,9 +183,7 @@ export function Sidebar({
                       </button>
                     ))
                   ) : (
-                    <p className="text-sm text-gray-500 text-center py-8">
-                      No recent checks
-                    </p>
+                    <p className="text-sm text-gray-500 text-center py-8">No recent checks</p>
                   )}
                 </div>
               </ScrollArea>

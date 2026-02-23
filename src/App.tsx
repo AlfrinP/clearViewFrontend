@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Sidebar } from './components/Sidebar';
+import { Sidebar } from './routes/dashboard/Sidebar';
 import { FactCheckingPage } from './components/FactCheckingPage';
 import { DocumentUploadPage } from './components/DocumentUploadPage';
 import { HistoryPage } from './components/HistoryPage';
