@@ -64,12 +64,12 @@ export function ResultsDisplay({ result, onNewCheck }: ResultsDisplayProps) {
     return 'bg-gray-50 border-gray-200';
   };
 
-  const getTrustScoreColor = (score: number) => {
-    if (score >= 0.9) return 'text-green-600';
-    if (score >= 0.7) return 'text-blue-600';
-    if (score >= 0.5) return 'text-yellow-600';
-    return 'text-red-600';
-  };
+  // const getTrustScoreColor = (score: number) => {
+  //   if (score >= 0.9) return 'text-green-600';
+  //   if (score >= 0.7) return 'text-blue-600';
+  //   if (score >= 0.5) return 'text-yellow-600';
+  //   return 'text-red-600';
+  // };
 
   const getTrustScoreBadge = (score: number) => {
     if (score >= 0.9) return 'bg-green-100 text-green-800';

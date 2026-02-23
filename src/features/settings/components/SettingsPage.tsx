@@ -1,4 +1,4 @@
-import { User, Bell, Shield, Database, Mail } from 'lucide-react';
+import { User, Bell, Shield, Database } from 'lucide-react';
 import { Card } from '../../../components/ui/card';
 import { Input } from '../../../components/ui/input';
 import { Label } from '../../../components/ui/label';

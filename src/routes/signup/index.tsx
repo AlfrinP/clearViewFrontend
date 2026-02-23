@@ -13,7 +13,7 @@ export const Route = createFileRoute('/signup/')({
 function SignupComponent() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [isSignup, setIsSignup] = useState(false);
+  const isSignup = false;
   const [name, setName] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {

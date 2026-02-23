@@ -23,9 +23,11 @@ interface ConversationHistoryItem {
   timestamp: Date;
 }
 
+export type PageId = 'fact-check' | 'upload' | 'history' | 'settings';
+
 interface SidebarProps {
   activePage: string;
-  onNavigate: (page: 'fact-check' | 'upload' | 'history' | 'settings') => void;
+  onNavigate: (page: PageId) => void;
   onLoadConversation: (id: string) => void;
   conversations: ConversationHistoryItem[];
   userName: string;
@@ -133,7 +135,7 @@ export function Sidebar({
                   className={`w-full justify-start mb-1 ${
                     isActive ? 'bg-indigo-600 hover:bg-indigo-700' : ''
                   } ${isCollapsed ? 'justify-center px-2' : ''}`}
-                  onClick={() => onNavigate(item.id as any)}
+                  onClick={() => onNavigate(item.id as PageId)}
                 >
                   <Icon className={`size-5 ${isCollapsed ? '' : 'mr-3'}`} />
                   {!isCollapsed && <span>{item.label}</span>}
