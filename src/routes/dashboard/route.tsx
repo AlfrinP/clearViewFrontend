@@ -65,7 +65,7 @@ function DashboardLayoutComponent() {
         userName="User"
         onLogout={handleLogout}
       />
-      <div className="flex-1 min-w-0 transition-all duration-300">
+      <div className="flex-1 overflow-y-auto transition-all duration-300">
         <Outlet />
       </div>
     </div>
