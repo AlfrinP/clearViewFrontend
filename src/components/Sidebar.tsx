@@ -70,20 +70,21 @@ export function Sidebar({
   return (
     <>
       {/* Mobile Menu Button */}
-      <Button
-        variant="ghost"
-        size="icon"
-        className="fixed top-4 left-4 z-50 md:hidden bg-white shadow-lg"
-        onClick={() => setIsCollapsed(!isCollapsed)}
-      >
-        {isCollapsed ? <Menu className="size-5" /> : <X className="size-5" />}
-      </Button>
+      {isCollapsed && (
+        <Button
+          variant="ghost"
+          size="icon"
+          className="fixed top-4 left-4 z-50 md:hidden bg-white shadow-lg"
+          onClick={() => setIsCollapsed(!isCollapsed)}
+        >
+          <Menu className="size-5" />
+        </Button>
+      )}
 
       {/* Sidebar */}
       <aside
-        className={`fixed left-0 top-0 h-screen bg-white border-r shadow-lg z-40 transition-all duration-300 ${
-          isCollapsed ? 'w-0 md:w-20' : 'w-80'
-        } overflow-hidden`}
+        data-collapsed={isCollapsed}
+        className="fixed left-0 top-0 h-screen w-80 data-[collapsed=true]:w-0 md:data-[collapsed=true]:w-20 bg-white border-r shadow-lg z-40 transition-all duration-300 overflow-hidden"
       >
         <div className="flex flex-col h-full">
           {/* Header */}
@@ -100,12 +101,7 @@ export function Sidebar({
                   </div>
                 </div>
               )}
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setIsCollapsed(!isCollapsed)}
-                className="hidden md:flex"
-              >
+              <Button variant="ghost" size="icon" onClick={() => setIsCollapsed(!isCollapsed)}>
                 {isCollapsed ? (
                   <ChevronRight className="size-5" />
                 ) : (
