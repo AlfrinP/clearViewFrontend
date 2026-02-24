@@ -19,7 +19,7 @@ export const useLogin = (options?: UseLoginOptions) => {
 
   return useMutation({
     mutationFn: (credentials: LoginRequest) => loginApi(credentials),
-    onSuccess: (data) => {
+    onSuccess: data => {
       // Store token
       tokenStorage.setToken(data.access_token, data.token_type);
 
@@ -36,12 +36,49 @@ export const useLogin = (options?: UseLoginOptions) => {
     },
     onError: (error: any) => {
       console.error('Login error:', error);
-      
-      const errorMessage = 
-        error.response?.data?.detail || 
-        error.message || 
+
+      const errorMessage =
+        error.response?.data?.detail ||
+        error.message ||
         'Login failed. Please check your credentials.';
-      
+
+      toast.error(errorMessage);
+
+      // Call custom error handler if provided
+      options?.onError?.(error);
+    },
+  });
+};
+
+export const useSignup = (options?: UseLoginOptions) => {
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (credentials: LoginRequest) => loginApi(credentials),
+    onSuccess: data => {
+      // Store token
+      tokenStorage.setToken(data.access_token, data.token_type);
+
+      // Invalidate all queries to refetch with new auth
+      queryClient.invalidateQueries();
+
+      toast.success('Login successful!');
+
+      // Navigate to dashboard
+      navigate({ to: '/dashboard/fact-check' });
+
+      // Call custom success handler if provided
+      options?.onSuccess?.(data);
+    },
+    onError: (error: any) => {
+      console.error('Login error:', error);
+
+      const errorMessage =
+        error.response?.data?.detail ||
+        error.message ||
+        'Login failed. Please check your credentials.';
+
       toast.error(errorMessage);
 
       // Call custom error handler if provided
