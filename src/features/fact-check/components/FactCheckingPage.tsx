@@ -4,6 +4,8 @@ import { Button } from '../../../components/ui/button';
 import { Textarea } from '../../../components/ui/textarea';
 import { Card } from '../../../components/ui/card';
 import { ResultsDisplay } from '../../../components/ResultsDisplay';
+import { useVerifyClaim } from '../hooks/useFactCheck';
+import type { VerificationResponse } from '../../../types/api';
 
 interface FactCheckResult {
   claim: string;
@@ -34,8 +36,40 @@ interface FactCheckingPageProps {
 
 export function FactCheckingPage({ onSaveConversation, loadedResult }: FactCheckingPageProps) {
   const [claim, setClaim] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
   const [result, setResult] = useState<FactCheckResult | null>(loadedResult || null);
+
+  const { mutate: verifyClaim, isPending } = useVerifyClaim({
+    onSuccess: (data: VerificationResponse) => {
+      // Transform API response to match component interface
+      const transformedResult: FactCheckResult = {
+        claim: data.claim,
+        verdict: data.verdict,
+        confidence: data.confidence,
+        policy_sources: data.policy_sources.map(source => ({
+          title: source.title || '',
+          url: source.url || '',
+          snippet: source.snippet || '',
+          domain: source.domain || '',
+          trust_score: source.trust_score || 0,
+        })),
+        external_sources: data.external_sources.map(source => ({
+          title: source.title || '',
+          url: source.url || '',
+          snippet: source.snippet || '',
+          domain: source.domain || '',
+          trust_score: source.trust_score || 0,
+        })),
+        reasoning: data.reasoning,
+        conflicts_found: data.conflicts_found,
+      };
+
+      setResult(transformedResult);
+      
+      if (onSaveConversation) {
+        onSaveConversation(transformedResult);
+      }
+    },
+  });
 
   // Update result when loadedResult changes
   useEffect(() => {
@@ -49,77 +83,8 @@ export function FactCheckingPage({ onSaveConversation, loadedResult }: FactCheck
 
     if (!claim.trim()) return;
 
-    setIsLoading(true);
     setResult(null);
-
-    // Simulate API call - Replace with your actual API endpoint
-    try {
-      // Mock API call - replace this with:
-      // const response = await fetch('YOUR_API_ENDPOINT', {
-      //   method: 'POST',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify({ claim })
-      // });
-      // const data = await response.json();
-
-      await new Promise(resolve => setTimeout(resolve, 2000));
-
-      // Mock response - this will be replaced with actual API response
-      const mockResult: FactCheckResult = {
-        claim: claim,
-        verdict: 'Mostly True',
-        confidence: 0.85,
-        policy_sources: [
-          {
-            title: 'CDC Guidelines on COVID-19 Vaccination',
-            url: 'https://www.cdc.gov/coronavirus/2019-ncov/vaccines/',
-            snippet:
-              'The CDC recommends COVID-19 vaccines for everyone ages 6 months and older. Vaccines are safe and effective at preventing serious illness.',
-            domain: 'cdc.gov',
-            trust_score: 0.95,
-          },
-          {
-            title: 'FDA COVID-19 Vaccine Authorization',
-            url: 'https://www.fda.gov/emergency-preparedness-and-response/coronavirus-disease-2019-covid-19/covid-19-vaccines',
-            snippet:
-              'FDA has authorized and approved COVID-19 vaccines after thorough testing and review of safety data.',
-            domain: 'fda.gov',
-            trust_score: 0.98,
-          },
-        ],
-        external_sources: [
-          {
-            title: 'Johns Hopkins Medicine: COVID-19 Vaccines',
-            url: 'https://www.hopkinsmedicine.org/health/conditions-and-diseases/coronavirus/covid-19-vaccines',
-            snippet:
-              'COVID-19 vaccines are safe and have been extensively tested. They significantly reduce the risk of severe illness.',
-            domain: 'hopkinsmedicine.org',
-            trust_score: 0.92,
-          },
-          {
-            title: 'Mayo Clinic: COVID-19 Vaccine Facts',
-            url: 'https://www.mayoclinic.org/diseases-conditions/coronavirus/in-depth/coronavirus-vaccine/art-20484859',
-            snippet:
-              'COVID-19 vaccines have undergone rigorous testing and continue to be monitored for safety.',
-            domain: 'mayoclinic.org',
-            trust_score: 0.9,
-          },
-        ],
-        reasoning:
-          'The claim aligns with current medical consensus and government health agency guidelines. Multiple authoritative sources, including the CDC and FDA, confirm that COVID-19 vaccines have undergone extensive safety testing and continue to be monitored. While no medical intervention is completely without risk, the evidence strongly supports the safety profile of authorized COVID-19 vaccines.',
-        conflicts_found: false,
-      };
-
-      setResult(mockResult);
-      if (onSaveConversation) {
-        onSaveConversation(mockResult);
-      }
-    } catch (error) {
-      console.error('Error checking fact:', error);
-      // Handle error state here
-    } finally {
-      setIsLoading(false);
-    }
+    verifyClaim({ claim: claim.trim() });
   };
 
   const handleNewCheck = () => {
@@ -153,7 +118,7 @@ export function FactCheckingPage({ onSaveConversation, loadedResult }: FactCheck
                 value={claim}
                 onChange={e => setClaim(e.target.value)}
                 className="min-h-[150px] resize-none"
-                disabled={isLoading}
+                disabled={isPending}
               />
             </div>
 
@@ -161,9 +126,9 @@ export function FactCheckingPage({ onSaveConversation, loadedResult }: FactCheck
               type="submit"
               className="w-full bg-indigo-600 hover:bg-indigo-700"
               size="lg"
-              disabled={!claim.trim() || isLoading}
+              disabled={!claim.trim() || isPending}
             >
-              {isLoading ? (
+              {isPending ? (
                 <>
                   <Loader2 className="mr-2 size-5 animate-spin" />
                   Analyzing Claim...
@@ -177,7 +142,7 @@ export function FactCheckingPage({ onSaveConversation, loadedResult }: FactCheck
             </Button>
           </form>
 
-          {isLoading && (
+          {isPending && (
             <div className="mt-8 space-y-4">
               <div className="flex items-center justify-center text-gray-600">
                 <Loader2 className="mr-3 size-6 animate-spin text-indigo-600" />

@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { Upload, X, CheckCircle, Loader2, FileText, DotIcon } from 'lucide-react';
+import { Upload, X, CheckCircle, Loader2, FileText, DotIcon, AlertCircle } from 'lucide-react';
 import { Button } from '../../../components/ui/button';
 import { Card } from '../../../components/ui/card';
 import { Badge } from '../../../components/ui/badge';
 import { DocumentUploadInfo } from '../../../utils/constants';
+import { useUploadDocument } from '../hooks/useUpload';
 
 interface UploadedDocument {
   id: string;
@@ -12,52 +13,81 @@ interface UploadedDocument {
   type: string;
   uploadedAt: Date;
   status: 'uploading' | 'success' | 'error';
+  file: File;
+  documentsIngested?: number;
+  errorMessage?: string;
 }
 
 export function DocumentUploadPage() {
   const [documents, setDocuments] = useState<UploadedDocument[]>([]);
   const [isDragging, setIsDragging] = useState(false);
 
+  const { mutate: uploadDocument } = useUploadDocument({
+    onSuccess: (data, variables) => {
+      // Find the document by file reference
+      setDocuments(prev =>
+        prev.map(doc => {
+          if (doc.file === variables) {
+            return {
+              ...doc,
+              status: 'success' as const,
+              documentsIngested: data.documents_ingested,
+            };
+          }
+          return doc;
+        })
+      );
+    },
+    onError: (error, variables) => {
+      // Find the document by file reference
+      setDocuments(prev =>
+        prev.map(doc => {
+          if (doc.file === variables) {
+            return {
+              ...doc,
+              status: 'error' as const,
+              errorMessage: (error as any).message || 'Upload failed',
+            };
+          }
+          return doc;
+        })
+      );
+    },
+  });
+
   const handleFileSelect = (files: FileList | null) => {
     if (!files) return;
 
-    const newDocs: UploadedDocument[] = Array.from(files).map(file => ({
+    const fileArray = Array.from(files);
+    
+    // Filter for PDF files only (as per API spec)
+    const pdfFiles = fileArray.filter(file => {
+      if (file.type !== 'application/pdf') {
+        // Show error toast for non-PDF files
+        return false;
+      }
+      return true;
+    });
+
+    if (pdfFiles.length === 0) {
+      return;
+    }
+
+    const newDocs: UploadedDocument[] = pdfFiles.map(file => ({
       id: Math.random().toString(36).substr(2, 9),
       name: file.name,
       size: file.size,
       type: file.type,
       uploadedAt: new Date(),
       status: 'uploading' as const,
+      file: file,
     }));
 
     setDocuments(prev => [...prev, ...newDocs]);
 
-    // Simulate upload process - Replace with actual API call
+    // Upload each file
     newDocs.forEach(doc => {
-      setTimeout(() => {
-        setDocuments(prev =>
-          prev.map(d => (d.id === doc.id ? { ...d, status: 'success' as const } : d)),
-        );
-      }, 1500);
-
-      // Uncomment and modify for actual API call:
-      // const formData = new FormData();
-      // formData.append('file', file);
-      // fetch('YOUR_UPLOAD_API_ENDPOINT', {
-      //   method: 'POST',
-      //   body: formData
-      // })
-      // .then(response => response.json())
-      // .then(data => {
-      //   setDocuments(prev => prev.map(d =>
-      //     d.id === doc.id ? { ...d, status: 'success' } : d
-      //   ));
-      // })
-      // .catch(error => {
-      //   setDocuments(prev => prev.map(d =>
-      //     d.id === doc.id ? { ...d, status: 'error' } : d
-      //   ));
-      // });
+      uploadDocument(doc.file);
     });
   };
 
@@ -92,9 +122,9 @@ export function DocumentUploadPage() {
     <div className="min-h-screen bg-linear-to-br from-blue-50 to-indigo-100 p-6">
       <div className="max-w-4xl mx-auto pt-4">
         <div className="text-center mb-8">
-          <h1 className="mb-2">Upload Policy Documents</h1>
+          <h1 className="text-4xl font-bold text-gray-900 mb-2">Upload Policy Documents</h1>
           <p className="text-gray-600">
-            Upload government or medical policy documents to enhance fact-checking accuracy
+            Upload government or medical policy documents (PDF only) to enhance fact-checking accuracy
           </p>
         </div>
 
@@ -111,15 +141,15 @@ export function DocumentUploadPage() {
             <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-indigo-100 mb-4">
               <Upload className="size-10 text-indigo-600" />
             </div>
-            <h3 className="mb-2">Drop files here or click to upload</h3>
-            <p className="text-gray-600 mb-6">Supported formats: PDF, DOC, DOCX, TXT</p>
+            <h2 className="text-2xl font-bold text-gray-900 mb-2">Drop files here or click to upload</h2>
+            <p className="text-gray-600 mb-6">Supported format: PDF only</p>
 
             <input
               type="file"
               id="file-upload"
               className="hidden"
               multiple
-              accept=".pdf,.doc,.docx,.txt"
+              accept=".pdf,application/pdf"
               onChange={e => handleFileSelect(e.target.files)}
             />
             <Button
@@ -128,7 +158,7 @@ export function DocumentUploadPage() {
               size="lg"
             >
               <Upload className="mr-2 size-5" />
-              Select Files
+              Select PDF Files
             </Button>
           </div>
         </Card>
@@ -173,15 +203,27 @@ export function DocumentUploadPage() {
                     {doc.status === 'success' && (
                       <div className="flex items-center gap-2 text-green-600">
                         <CheckCircle className="size-5" />
-                        <span className="text-sm">Uploaded</span>
+                        <span className="text-sm">
+                          {doc.documentsIngested
+                            ? `Uploaded (${doc.documentsIngested} docs)`
+                            : 'Uploaded'}
+                        </span>
                       </div>
                     )}
-                    {doc.status === 'error' && <span className="text-sm text-red-600">Failed</span>}
+                    {doc.status === 'error' && (
+                      <div className="flex items-center gap-2 text-red-600">
+                        <AlertCircle className="size-5" />
+                        <span className="text-sm" title={doc.errorMessage}>
+                          Failed
+                        </span>
+                      </div>
+                    )}
                     <Button
                       variant="ghost"
                       size="sm"
                       onClick={() => removeDocument(doc.id)}
                       className="hover:bg-red-50 hover:text-red-600"
+                      disabled={doc.status === 'uploading'}
                     >
                       <X className="size-4" />
                     </Button>
@@ -194,7 +236,7 @@ export function DocumentUploadPage() {
 
         {/* Info Section */}
         <Card className="p-6 mt-6 bg-blue-50 border-blue-200">
-          <h4>About Policy Documents</h4>
+          <h3 className="text-xl font-bold text-gray-900 mb-4">About Policy Documents</h3>
           <ul className="space-y-2 text-sm text-gray-700">
             {DocumentUploadInfo.map((info: string, index: number) => (
               <li key={index} className="flex items-center justify-start gap-2">

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Outlet, createFileRoute, useNavigate, useRouterState } from '@tanstack/react-router';
 import { Sidebar } from '../../components/Sidebar';
+import { useLogout } from '../../features/auth/hooks/useAuth';
 
 type PageId = 'fact-check' | 'upload' | 'history' | 'settings';
 
@@ -10,6 +11,7 @@ export const Route = createFileRoute('/dashboard')({
 
 function DashboardLayoutComponent() {
   const navigate = useNavigate();
+  const { logout } = useLogout();
 
   // Simple in-memory conversations list for now
   const [conversations] = useState<
@@ -51,8 +53,7 @@ function DashboardLayoutComponent() {
   };
 
   const handleLogout = () => {
-    // Replace with real auth/logout when available
-    navigate({ to: '/login' });
+    logout();
   };
 
   return (
