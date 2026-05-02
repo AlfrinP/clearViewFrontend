@@ -1,7 +1,9 @@
+import axios, { type AxiosError, type AxiosInstance } from "axios"
+
 import { getApiBaseUrl } from "./config"
 import type { ApiError, HTTPValidationError } from "./types"
 
-function createApiError(
+export function createApiError(
   message: string,
   status: number,
   detail?: HTTPValidationError | unknown
@@ -14,78 +16,61 @@ function createApiError(
   }
 }
 
-function joinUrl(base: string, path: string): string {
-  const p = path.startsWith("/") ? path : `/${path}`
-  return `${base}${p}`
-}
-
-async function parseJsonBody(response: Response): Promise<unknown> {
-  const text = await response.text()
-  if (!text) {
-    return null
-  }
-  try {
-    return JSON.parse(text) as unknown
-  } catch {
-    return text
-  }
-}
-
-export async function requestJson<T>(
-  path: string,
-  init?: RequestInit
-): Promise<T> {
-  const base = getApiBaseUrl()
-  const url = joinUrl(base, path)
-  const headers = new Headers(init?.headers)
-  if (!headers.has("Content-Type") && init?.body && typeof init.body === "string") {
-    headers.set("Content-Type", "application/json")
-  }
-  const response = await fetch(url, { ...init, headers })
-
-  const data = await parseJsonBody(response)
-
-  if (!response.ok) {
-    let message = `Request failed (${response.status})`
-    if (typeof data === "string") {
-      message = data || message
-    } else if (data && typeof data === "object" && "detail" in data) {
-      const d = (data as HTTPValidationError).detail
-      if (Array.isArray(d) && d.length > 0) {
-        message = d.map((x) => x.msg).join("; ")
+function toApiError(error: unknown): ApiError {
+  if (axios.isAxiosError(error)) {
+    const ax = error as AxiosError<unknown>
+    if (ax.response) {
+      const status = ax.response.status
+      const resData = ax.response.data
+      let message = `Request failed (${status})`
+      if (typeof resData === "string") {
+        message = resData || message
+      } else if (
+        resData &&
+        typeof resData === "object" &&
+        "detail" in resData &&
+        Array.isArray((resData as HTTPValidationError).detail)
+      ) {
+        const d = (resData as HTTPValidationError).detail
+        if (d.length > 0) {
+          message = d.map((x) => x.msg).join("; ")
+        }
       }
+      return createApiError(message, status, resData as HTTPValidationError)
     }
-    throw createApiError(message, response.status, data as HTTPValidationError)
+    if (ax.code === "ECONNABORTED") {
+      return createApiError("Request timed out", 0)
+    }
+    return createApiError(ax.message || "Network error", 0)
   }
-
-  return data as T
+  if (error instanceof Error) {
+    return createApiError(error.message, 0)
+  }
+  return createApiError("Request failed", 0)
 }
 
-export async function requestMultipart<T>(
-  path: string,
-  formData: FormData
-): Promise<T> {
-  const base = getApiBaseUrl()
-  const url = joinUrl(base, path)
-  const response = await fetch(url, {
-    method: "POST",
-    body: formData,
-  })
+/**
+ * Shared Axios instance for the ClearView API. Use this for custom calls, or
+ * rely on `verifyNews` / `listFiles` / etc. in the same folder.
+ */
+export const api: AxiosInstance = axios.create({
+  baseURL: getApiBaseUrl(),
+  headers: {
+    Accept: "application/json",
+  },
+  timeout: 120_000,
+  validateStatus: (status) => status >= 200 && status < 300,
+})
 
-  const data = await parseJsonBody(response)
+api.interceptors.request.use(
+  (config) => {
+    config.baseURL = getApiBaseUrl()
+    return config
+  },
+  (error) => Promise.reject(toApiError(error))
+)
 
-  if (!response.ok) {
-    let message = `Request failed (${response.status})`
-    if (typeof data === "string") {
-      message = data || message
-    } else if (data && typeof data === "object" && "detail" in data) {
-      const d = (data as HTTPValidationError).detail
-      if (Array.isArray(d) && d.length > 0) {
-        message = d.map((x) => x.msg).join("; ")
-      }
-    }
-    throw createApiError(message, response.status, data as HTTPValidationError)
-  }
-
-  return data as T
-}
+api.interceptors.response.use(
+  (response) => response,
+  (error) => Promise.reject(toApiError(error))
+)

@@ -58,6 +58,10 @@ export type FileMetadataDTO = {
   file_title?: string | null
   file_size?: number | null
   uploaded_at?: string | null
+  /** Appwrite (or storage) URL to open/preview the file in browser */
+  view_url?: string | null
+  /** Appwrite (or storage) URL to download the file */
+  download_url?: string | null
 }
 
 export type FilesPageResponse = {

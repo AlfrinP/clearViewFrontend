@@ -1,4 +1,4 @@
-import { requestJson, requestMultipart } from "./client"
+import { api } from "./client"
 import type {
   DeleteFileResponse,
   FilesPageResponse,
@@ -9,13 +9,10 @@ export async function listFiles(
   page = 1,
   limit = 10
 ): Promise<FilesPageResponse> {
-  const params = new URLSearchParams({
-    page: String(page),
-    limit: String(limit),
+  const { data } = await api.get<FilesPageResponse>("/api/v1/files", {
+    params: { page, limit },
   })
-  return requestJson<FilesPageResponse>(`/api/v1/files?${params.toString()}`, {
-    method: "GET",
-  })
+  return data
 }
 
 export async function uploadFile(
@@ -25,11 +22,16 @@ export async function uploadFile(
   const formData = new FormData()
   formData.append("file", file)
   formData.append("file_title", fileTitle)
-  return requestMultipart<UploadFileResponse>("/api/v1/upload-file", formData)
+  const { data } = await api.post<UploadFileResponse>(
+    "/api/v1/upload-file",
+    formData
+  )
+  return data
 }
 
 export async function deleteFile(fileId: string): Promise<DeleteFileResponse> {
-  return requestJson<DeleteFileResponse>(`/api/v1/files/${encodeURIComponent(fileId)}`, {
-    method: "DELETE",
-  })
+  const { data } = await api.delete<DeleteFileResponse>(
+    `/api/v1/files/${encodeURIComponent(fileId)}`
+  )
+  return data
 }

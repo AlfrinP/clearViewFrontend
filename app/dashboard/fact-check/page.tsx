@@ -47,9 +47,7 @@ export default function FactCheckPage() {
       const data = await verifyNews(trimmed)
       setResult(data)
     } catch (error) {
-      const message = isApiError(error)
-        ? error.message
-        : "Verification failed."
+      const message = isApiError(error) ? error.message : "Verification failed."
       toast.error(message)
     } finally {
       setPending(false)
@@ -65,7 +63,7 @@ export default function FactCheckPage() {
     <div className="mx-auto flex w-full max-w-4xl flex-col gap-6 p-4 md:p-6">
       <div>
         <h1 className="font-heading text-sm font-medium">Fact Check</h1>
-        <p className="text-muted-foreground mt-1 text-xs/relaxed">
+        <p className="mt-1 text-xs/relaxed text-muted-foreground">
           Submit a factual claim or headline. Results combine your indexed
           documents with optional web evidence.
         </p>
@@ -120,9 +118,11 @@ export default function FactCheckPage() {
               </div>
               <div className="grid gap-2">
                 <div className="flex flex-wrap items-center gap-2">
-                  <span className="text-muted-foreground text-xs">Confidence</span>
+                  <span className="text-xs text-muted-foreground">
+                    Confidence
+                  </span>
                   <Progress value={confidencePct} className="max-w-xs flex-1" />
-                  <span className="text-muted-foreground text-xs tabular-nums">
+                  <span className="text-xs text-muted-foreground tabular-nums">
                     {final?.confidence != null ? `${confidencePct}%` : "—"}
                   </span>
                 </div>
@@ -134,7 +134,8 @@ export default function FactCheckPage() {
                       </Badge>
                     )
                   )}
-                  {(!final?.sources_used || final.sources_used.length === 0) && (
+                  {(!final?.sources_used ||
+                    final.sources_used.length === 0) && (
                     <Badge variant="outline">sources: —</Badge>
                   )}
                 </div>
@@ -144,10 +145,12 @@ export default function FactCheckPage() {
               {final?.justification ? (
                 <p className="text-xs/relaxed">{final.justification}</p>
               ) : (
-                <p className="text-muted-foreground text-xs">No justification returned.</p>
+                <p className="text-xs text-muted-foreground">
+                  No justification returned.
+                </p>
               )}
 
-              <details className="border-border border">
+              <details className="border border-border">
                 <summary className="cursor-pointer bg-muted/40 px-3 py-2 text-xs font-medium">
                   Internal evaluation (pre–web search)
                 </summary>
@@ -157,7 +160,9 @@ export default function FactCheckPage() {
                     {result.evaluation?.verdict ?? "—"}
                   </p>
                   <p>
-                    <span className="text-muted-foreground">Evidence strength: </span>
+                    <span className="text-muted-foreground">
+                      Evidence strength:{" "}
+                    </span>
                     {result.evaluation?.evidence_strength ?? "—"}
                   </p>
                   <p>
@@ -167,7 +172,9 @@ export default function FactCheckPage() {
                       : "—"}
                   </p>
                   <p>
-                    <span className="text-muted-foreground">Needs external search: </span>
+                    <span className="text-muted-foreground">
+                      Needs external search:{" "}
+                    </span>
                     {result.evaluation?.needs_external_search == null
                       ? "—"
                       : result.evaluation.needs_external_search
@@ -175,7 +182,9 @@ export default function FactCheckPage() {
                         : "No"}
                   </p>
                   {result.evaluation?.reason ? (
-                    <p className="text-xs/relaxed">{result.evaluation.reason}</p>
+                    <p className="text-xs/relaxed">
+                      {result.evaluation.reason}
+                    </p>
                   ) : null}
                 </div>
               </details>
@@ -183,8 +192,9 @@ export default function FactCheckPage() {
               <div className="grid gap-2">
                 <h3 className="text-xs font-medium">External sources</h3>
                 {(result.external_sources?.length ?? 0) === 0 ? (
-                  <p className="text-muted-foreground text-xs">
-                    No external sources were used (internal evidence was sufficient).
+                  <p className="text-xs text-muted-foreground">
+                    No external sources were used (internal evidence was
+                    sufficient).
                   </p>
                 ) : (
                   <ul className="grid gap-3">
@@ -197,7 +207,10 @@ export default function FactCheckPage() {
                                 {src.title ?? "Untitled"}
                               </p>
                               {src.score != null && (
-                                <Badge variant="secondary" className="shrink-0 tabular-nums">
+                                <Badge
+                                  variant="secondary"
+                                  className="shrink-0 tabular-nums"
+                                >
                                   {src.score.toFixed(2)}
                                 </Badge>
                               )}
@@ -207,19 +220,19 @@ export default function FactCheckPage() {
                                 href={src.url}
                                 target="_blank"
                                 rel="noreferrer noopener"
-                                className="text-primary inline-flex items-center gap-1 text-xs underline-offset-4 hover:underline"
+                                className="inline-flex items-center gap-1 text-xs text-primary underline-offset-4 hover:underline"
                               >
                                 {src.url}
                                 <ExternalLink className="size-3 shrink-0" />
                               </a>
                             ) : null}
                             {src.description ? (
-                              <p className="text-muted-foreground text-xs/relaxed">
+                              <p className="text-xs/relaxed text-muted-foreground">
                                 {src.description}
                               </p>
                             ) : null}
                             {src.published_date ? (
-                              <p className="text-muted-foreground text-[0.65rem]">
+                              <p className="text-[0.65rem] text-muted-foreground">
                                 Published: {src.published_date}
                               </p>
                             ) : null}

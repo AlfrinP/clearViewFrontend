@@ -1,5 +1,5 @@
 export { getApiBaseUrl } from "./config"
-export { requestJson, requestMultipart } from "./client"
+export { api } from "./client"
 export { verifyNews } from "./verify-news"
 export { listFiles, uploadFile, deleteFile } from "./files"
 export type {

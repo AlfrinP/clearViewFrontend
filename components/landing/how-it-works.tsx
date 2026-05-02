@@ -32,7 +32,7 @@ export function LandingHowItWorks() {
       <div className="mx-auto max-w-6xl px-4">
         <div className="mb-10 max-w-xl">
           <h2 className="font-heading text-sm font-medium">How it works</h2>
-          <p className="text-muted-foreground mt-2 text-xs/relaxed">
+          <p className="mt-2 text-xs/relaxed text-muted-foreground">
             Three steps from raw documents to a traceable credibility decision.
           </p>
         </div>
@@ -40,7 +40,7 @@ export function LandingHowItWorks() {
           {steps.map(({ step, title, description }) => (
             <Card key={step}>
               <CardHeader className="gap-2">
-                <p className="text-muted-foreground text-[0.65rem] tabular-nums">
+                <p className="text-[0.65rem] text-muted-foreground tabular-nums">
                   {step}
                 </p>
                 <CardTitle className="font-heading text-sm">{title}</CardTitle>

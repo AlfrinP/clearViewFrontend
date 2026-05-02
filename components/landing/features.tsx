@@ -36,11 +36,13 @@ const items = [
 
 export function LandingFeatures() {
   return (
-    <section className="border-border border-b py-16 md:py-20">
+    <section className="border-b border-border py-16 md:py-20">
       <div className="mx-auto max-w-6xl px-4">
         <div className="mb-10 max-w-xl">
-          <h2 className="font-heading text-sm font-medium">Why teams use ClearView</h2>
-          <p className="text-muted-foreground mt-2 text-xs/relaxed">
+          <h2 className="font-heading text-sm font-medium">
+            Why teams use ClearView
+          </h2>
+          <p className="mt-2 text-xs/relaxed text-muted-foreground">
             Built for newsrooms, research desks, and compliance teams who need
             defensible, evidence-backed answers.
           </p>

@@ -34,11 +34,11 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
   return (
     <SidebarProvider>
       <Sidebar collapsible="icon">
-        <SidebarHeader className="border-sidebar-border border-b">
+        <SidebarHeader className="border-b border-sidebar-border">
           <div className="flex h-12 items-center px-2">
             <Link
               href="/"
-              className="truncate text-sidebar-foreground text-xs font-medium hover:text-sidebar-accent-foreground"
+              className="truncate text-xs font-medium text-sidebar-foreground hover:text-sidebar-accent-foreground"
             >
               ClearView
             </Link>
@@ -67,7 +67,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
-        <SidebarSeparator />
+        <SidebarSeparator className="mx-0" />
         <SidebarFooter className="gap-2">
           <div className="flex items-center justify-end px-2">
             <ThemeToggle />
@@ -76,7 +76,7 @@ export function DashboardShell({ children }: { children: React.ReactNode }) {
         <SidebarRail />
       </Sidebar>
       <SidebarInset>
-        <header className="flex h-12 shrink-0 items-center gap-2 border-border border-b px-2 md:hidden">
+        <header className="flex h-12 shrink-0 items-center gap-2 border-b border-border px-2 md:hidden">
           <SidebarTrigger />
           <span className="text-xs">Menu</span>
         </header>

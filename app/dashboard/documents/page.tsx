@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { MoreHorizontal, Trash2, Upload } from "lucide-react"
+import { Download, Eye, MoreHorizontal, Trash2, Upload } from "lucide-react"
 import { toast } from "sonner"
 
 import { deleteFile, isApiError, listFiles, uploadFile } from "@/backend"
@@ -52,9 +52,8 @@ export default function DocumentsPage() {
   const [total, setTotal] = React.useState(0)
   const [items, setItems] = React.useState<FileMetadataDTO[]>([])
 
-  const [deleteTarget, setDeleteTarget] = React.useState<FileMetadataDTO | null>(
-    null
-  )
+  const [deleteTarget, setDeleteTarget] =
+    React.useState<FileMetadataDTO | null>(null)
   const [deleting, setDeleting] = React.useState(false)
 
   const fileInputRef = React.useRef<HTMLInputElement>(null)
@@ -69,7 +68,9 @@ export default function DocumentsPage() {
       setTotal(data.total)
       setPage(data.page)
     } catch (error) {
-      const message = isApiError(error) ? error.message : "Failed to load files."
+      const message = isApiError(error)
+        ? error.message
+        : "Failed to load files."
       toast.error(message)
     } finally {
       setLoading(false)
@@ -155,7 +156,7 @@ export default function DocumentsPage() {
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-6 p-4 md:p-6">
       <div>
         <h1 className="font-heading text-sm font-medium">Documents</h1>
-        <p className="text-muted-foreground mt-1 text-xs/relaxed">
+        <p className="mt-1 text-xs/relaxed text-muted-foreground">
           Upload PDFs to your internal evidence store. Files are chunked and
           indexed for use with Fact Check.
         </p>
@@ -209,11 +210,16 @@ export default function DocumentsPage() {
               >
                 <Upload className="size-5 text-muted-foreground" />
                 <p>
-                  {file ? file.name : "Drag & drop a PDF here, or click to browse"}
+                  {file
+                    ? file.name
+                    : "Drag & drop a PDF here, or click to browse"}
                 </p>
               </div>
             </div>
-            <Button type="submit" disabled={uploading || !file || !fileTitle.trim()}>
+            <Button
+              type="submit"
+              disabled={uploading || !file || !fileTitle.trim()}
+            >
               {uploading ? "Uploading…" : "Upload & index"}
             </Button>
           </form>
@@ -223,7 +229,9 @@ export default function DocumentsPage() {
       <Card>
         <CardHeader className="flex flex-row flex-wrap items-center justify-between gap-2">
           <div>
-            <CardTitle className="font-heading text-sm">Evidence library</CardTitle>
+            <CardTitle className="font-heading text-sm">
+              Evidence library
+            </CardTitle>
             <CardDescription className="text-xs">
               Newest uploads first.
             </CardDescription>
@@ -246,8 +254,9 @@ export default function DocumentsPage() {
               ))}
             </div>
           ) : items.length === 0 ? (
-            <p className="text-muted-foreground border border-dashed border-border px-4 py-8 text-center text-xs">
-              No documents yet. Upload a PDF to seed your internal evidence store.
+            <p className="border border-dashed border-border px-4 py-8 text-center text-xs text-muted-foreground">
+              No documents yet. Upload a PDF to seed your internal evidence
+              store.
             </p>
           ) : (
             <div className="overflow-x-auto">
@@ -258,6 +267,7 @@ export default function DocumentsPage() {
                     <TableHead className="text-xs">Filename</TableHead>
                     <TableHead className="text-xs">Size</TableHead>
                     <TableHead className="text-xs">Uploaded</TableHead>
+                    <TableHead className="text-xs">Open</TableHead>
                     <TableHead className="w-[3rem] text-xs">
                       <span className="sr-only">Actions</span>
                     </TableHead>
@@ -277,6 +287,40 @@ export default function DocumentsPage() {
                       </TableCell>
                       <TableCell className="text-xs text-muted-foreground">
                         {formatDate(row.uploaded_at ?? undefined)}
+                      </TableCell>
+                      <TableCell className="text-xs">
+                        <div className="flex flex-wrap items-center gap-0.5">
+                          {row.view_url ? (
+                            <Button variant="ghost" size="icon-xs" asChild>
+                              <a
+                                href={row.view_url}
+                                target="_blank"
+                                rel="noreferrer noopener"
+                                title="View in browser"
+                              >
+                                <Eye className="size-4" />
+                                <span className="sr-only">View in browser</span>
+                              </a>
+                            </Button>
+                          ) : null}
+                          {row.download_url ? (
+                            <Button variant="ghost" size="icon-xs" asChild>
+                              <a
+                                href={row.download_url}
+                                target="_blank"
+                                rel="noreferrer noopener"
+                                title="Download file"
+                                download
+                              >
+                                <Download className="size-4" />
+                                <span className="sr-only">Download file</span>
+                              </a>
+                            </Button>
+                          ) : null}
+                          {!row.view_url && !row.download_url ? (
+                            <span className="text-muted-foreground">—</span>
+                          ) : null}
+                        </div>
                       </TableCell>
                       <TableCell className="text-right">
                         <DropdownMenu>
@@ -310,7 +354,7 @@ export default function DocumentsPage() {
 
           {!loading && items.length > 0 && (
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <p className="text-muted-foreground text-xs">
+              <p className="text-xs text-muted-foreground">
                 Page {page} of {totalPages}
               </p>
               <div className="flex gap-2">
@@ -353,7 +397,9 @@ export default function DocumentsPage() {
           {deleteTarget ? (
             <p className="text-xs">
               <span className="text-muted-foreground">Title: </span>
-              {deleteTarget.file_title ?? deleteTarget.file_name ?? deleteTarget.file_id}
+              {deleteTarget.file_title ??
+                deleteTarget.file_name ??
+                deleteTarget.file_id}
             </p>
           ) : null}
           <DialogFooter>

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 
 export function LandingNavbar() {
   return (
-    <header className="sticky top-0 z-40 border-border border-b bg-background/85 backdrop-blur-xs">
+    <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur-xs">
       <div className="mx-auto flex h-14 max-w-6xl items-center justify-between px-4">
         <Link href="/" className="text-sm font-medium">
           ClearView
